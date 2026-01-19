@@ -1,132 +1,195 @@
-# Credit Risk Prediction for a Lending Company  
-**Final Project – Data Scientist Internship (ID/X Partners × Rakamin)**
+# 📊 Credit Risk Prediction Model - Lending Company Portfolio Analysis
+
+## Project Status
+This project is currently being **enhanced** to improve modeling robustness and production readiness. Originally completed as a Project-Based Internship (PBI) deliverable, it is now being upgraded with production-grade ML pipelines and deployment capabilities.
 
 ---
 
-## 1. Project Background
+## 📌 Project Overview
+This project was developed as part of a **Project-Based Internship (PBI)** with ID/X Partners in collaboration with Rakamin. It simulates a real-world business case from a lending company operating in the consumer lending sector.
 
-As part of the final assignment of the Data Scientist internship program at **ID/X Partners**, in collaboration with **Rakamin**, this project simulates a real-world business case from a **lending company**.  
+**Business Problem:** Lending companies face challenges in accurately assessing credit risk, leading to high default rates and inefficient capital allocation.
 
-The company operates in the consumer lending sector and faces increasing challenges in managing **credit risk**, particularly in distinguishing between borrowers who are likely to **repay their loans** and those who may **default**. Ineffective credit risk assessment can lead to high default rates, financial losses, and inefficient capital allocation.
-
-To address this issue, the company seeks a **data-driven credit risk prediction model** that can support better lending decisions and risk management strategies.
-
----
-
-## 2. Business Problem
-
-Lending companies must evaluate loan applications accurately to balance **profitability** and **risk exposure**. However, traditional rule-based or manual assessment methods often fail to capture complex patterns in borrower behavior.
-
-The main business problems are:
-
-- High risk of **loan default** due to inaccurate borrower assessment  
-- Difficulty in identifying **high-risk applicants** early in the loan lifecycle  
-- Lack of data-driven insights to support **credit approval decisions**  
-- Inefficient risk segmentation that may lead to either:
-  - Approving risky borrowers, or  
-  - Rejecting potentially profitable customers
+**Objective:** Build a machine learning model to predict credit risk by classifying loans as "good" or "bad" based on historical loan data from 2007-2014.
 
 ---
 
-## 3. Company Goals
-
-The lending company aims to:
-
-- Minimize **credit losses** caused by bad loans  
-- Improve **loan approval accuracy**  
-- Enhance **risk-based decision making**  
-- Develop a scalable and explainable **credit risk scoring system**  
-- Support business teams (credit, risk, and management) with actionable insights
+## 🎯 Project Objectives
+1. Perform end-to-end data science workflow: EDA, cleaning, feature engineering, and modeling
+2. Develop and compare multiple classification models for credit risk prediction
+3. Identify the most suitable model based on business-relevant metrics
+4. Generate actionable insights for stakeholders through clear visualizations
+5. **Enhance with production-ready pipelines and deployment capabilities** (Current focus)
 
 ---
 
-## 4. Project Objective
-
-The primary objective of this project is to:
-
-> **Build a machine learning model that predicts credit risk by classifying loans as “good” or “bad” based on historical loan data.**
-
-Specifically, this project aims to:
-
-- Perform **end-to-end data science workflow**, including:
-  - Data understanding
-  - Data cleaning and preprocessing
-  - Feature engineering
-  - Outlier handling
-  - Model training and evaluation
-- Develop and compare multiple **classification models**
-- Identify the most suitable model based on business-relevant metrics
-- Prepare **clear and communicative visualizations** to present insights and results to stakeholders
+## 📊 Dataset
+- **Source:** Internal dataset from internship program
+- **File:** `loan_data_2007_2014.csv`
+- **Records:** 466,285 loan applications
+- **Period:** 2007-2014
+- **Features:** 75+ columns including borrower demographics, loan characteristics, credit history, and loan performance
 
 ---
 
-## 5. Dataset Overview
+## 🔧 Technical Approach
 
-The dataset used in this project is:
+### Current Enhancement Focus
+The project is undergoing significant upgrades to transform it from an internship deliverable to a production-ready solution:
 
-- **File name:** `loan_data_2007_2014.csv`
-- **Source:** Internal dataset provided as part of the internship program
-- **Description:** Historical loan records from a lending company between 2007 and 2014
+1. **Pipeline Refactoring:** Implementing `ColumnTransformer` and `Pipeline` for proper data separation
+2. **Leakage Prevention:** Ensuring all preprocessing steps are fitted only on training data
+3. **Deployment Architecture:** Adding model serving capabilities with FastAPI/Streamlit
+4. **Code Modularization:** Separating concerns into configurable, reusable components
 
-The dataset contains information related to:
+### Data Preprocessing & Feature Engineering
+- **Data Cleaning:** Removed irrelevant columns (identifiers, post-loan leakage variables, noisy text fields)
+- **Missing Value Handling:** Domain-informed imputation strategies with missing indicators
+- **Feature Engineering:** 
+  - Credit history duration calculation
+  - Regional mapping from state codes
+  - Employment length normalization
+  - Temporal feature extraction
+- **Outlier Treatment:** Business-aware capping and transformation strategies
 
-- Borrower demographics and employment
-- Loan characteristics (amount, term, interest rate)
-- Credit history and behavior
-- Loan performance and status
-
-Each record represents a **loan application**, with the target variable indicating the loan outcome (e.g., fully paid, charged off, default).
-
----
-
-## 6. Target Variable
-
-The target variable is derived from the `loan_status` column and is transformed into a **binary classification label**:
-
-- **0 → Good Loan** (e.g., fully paid)
-- **1 → Bad Loan** (e.g., charged off, default)
-
-This binary formulation aligns with the business goal of **credit risk prediction**, where identifying bad loans is critical for minimizing financial losses.
+### Target Variable Engineering
+- **Good Loans (0):** "Fully Paid", "Does not meet the credit policy. Status:Fully Paid"
+- **Bad Loans (1):** "Charged Off", "Default", "Does not meet the credit policy. Status:Charged Off"
+- **Excluded:** Ongoing/transitional states to ensure clean target labeling
+- **Class Distribution:** 81% Good Loans, 19% Bad Loans (after filtering)
 
 ---
 
-## 7. Scope & Methodology
+## 🧠 Modeling & Evaluation
 
-This project follows a standard **Data Science methodology**, including:
+### Data Preparation Strategy
+- **Train-Test Split:** 80-20 split with proper stratification
+- **Class Imbalance:** SMOTE oversampling applied with pipeline integration
+- **Feature Scaling:** StandardScaler within pipeline to prevent leakage
+- **Cross-Validation:** Nested CV for hyperparameter tuning
 
-1. Data Understanding & Exploratory Data Analysis (EDA)  
-2. Data Cleaning & Missing Value Handling  
-3. Feature Engineering & Encoding  
-4. Outlier Handling (business-driven approach)  
-5. Handling Imbalanced Data  
-6. Model Training & Evaluation  
-7. Model Comparison & Selection  
-8. Insight Generation & Visualization
+### Models Evaluated
+1. Logistic Regression (Baseline)
+2. Random Forest
+3. Gradient Boosting
+4. XGBoost
+5. **Ensemble approaches** (in progress)
 
-The solution is implemented using **Python**, leveraging common data science and machine learning libraries.
-
----
-
-## 8. Expected Impact
-
-By implementing this solution, the lending company is expected to:
-
-- Reduce default-related financial losses  
-- Improve decision consistency and transparency  
-- Enable data-driven credit risk management  
-- Gain deeper insights into borrower risk profiles  
+### Key Engineering Improvements
+- **Pipeline Architecture:** All preprocessing encapsulated in scikit-learn compatible transformers
+- **Column-specific Treatment:** Different strategies for numerical, categorical, and temporal features
+- **Reproducibility:** Deterministic transformations with proper random state management
+- **Validation Strategy:** Proper separation of validation data for early stopping
 
 ---
 
-## 9. Deliverables
+## 🚀 Deployment Architecture (In Progress)
 
-The final deliverables of this project include:
+The enhanced version includes deployment capabilities:
+- **REST API** with FastAPI for model serving
+- **Interactive Dashboard** with Streamlit for business user exploration
+- **Model Monitoring** infrastructure for performance tracking
+- **A/B Testing** framework for model comparison
 
-- A trained and evaluated **credit risk prediction model**
-- Supporting **visualizations and performance metrics**
-- A clear, structured **Jupyter Notebook** documenting the end-to-end process
-- Business-oriented insights that can be communicated to non-technical stakeholders
+### Reference Implementation
+For a complete example of a production-ready ML pipeline with proper data leakage prevention and deployment, see my other project:  
+**[Customer Churn Modeling with ANN](https://github.com/RevanzaIfannyA/Churn_Modeling_Classification_ANN_DLProject)**
+
+This reference project demonstrates:
+- ✅ Proper train-test separation with pipeline integration
+- ✅ Deployment-ready architecture
+- ✅ Comprehensive model evaluation
+- ✅ Business metric alignment
 
 ---
 
-This project demonstrates the application of data science techniques to solve a real-world **credit risk problem**, bridging technical modeling with business objectives.
+## 📈 Key Insights from Analysis
+
+### Business Impact Findings
+- Debt consolidation loans represent the highest volume but show variable risk patterns
+- Geographic regions show distinct risk profiles requiring localized strategies
+- Interest rate is a strong predictor but must be balanced with business constraints
+- Credit history features show non-linear relationships with default risk
+
+### Model Performance
+The enhanced pipeline focuses on:
+- **Business metrics** over pure accuracy (focus on recall for high-risk detection)
+- **Interpretability** for stakeholder trust
+- **Operational efficiency** for real-time predictions
+- **Robustness** across different economic cycles
+
+---
+
+## 🔄 Project Evolution Timeline
+
+### Phase 1: Internship Deliverable (Completed)
+- Exploratory analysis and baseline modeling
+- Business insight generation
+- Initial model comparison
+
+### Phase 2: Pipeline Enhancement (Current)
+- Refactoring preprocessing for production use
+- Implementing proper data separation patterns
+- Adding deployment infrastructure
+- Enhancing documentation and reproducibility
+
+### Phase 3: Advanced Features (Planned)
+- Model interpretability with SHAP/LIME
+- Automated retraining pipelines
+- Real-time prediction capabilities
+- Integration with business systems
+
+---
+
+## 🛠️ Technical Stack
+- **Core:** Python 3.8+, Jupyter, Git
+- **Data Processing:** Pandas, NumPy, Scikit-learn pipelines
+- **Machine Learning:** Scikit-learn, XGBoost, Imbalanced-learn
+- **Visualization:** Matplotlib, Seaborn, Plotly
+- **Deployment:** FastAPI, Streamlit, Docker
+- **Monitoring:** MLflow, Prometheus, Grafana (planned)
+
+---
+
+## 📚 Learning & Professional Development
+
+This project represents a significant learning journey:
+
+### Technical Skills Demonstrated
+- End-to-end ML system design
+- Data leakage prevention and pipeline architecture
+- Business metric alignment in model evaluation
+- Production deployment considerations
+
+### Professional Growth
+- **Iterative Improvement:** Recognizing limitations in initial approach and implementing solutions
+- **Engineering Mindset:** Moving from proof-of-concept to production-ready code
+- **Stakeholder Communication:** Balancing technical rigor with business practicality
+- **Quality Focus:** Implementing best practices for maintainable, testable code
+
+### Key Takeaways
+- The importance of proper data separation cannot be overstated
+- Pipeline architecture is fundamental, not optional
+- Business context drives technical decisions
+- Professional growth comes from recognizing and addressing gaps
+
+---
+
+## 🔗 Related Resources & References
+
+1. **Production ML Pipeline Reference:** [Churn Modeling Project](https://github.com/RevanzaIfannyA/Churn_Modeling_Classification_ANN_DLProject)
+2. **Scikit-learn Pipeline Documentation**
+3. **MLOps Best Practices Guides**
+4. **Credit Risk Modeling Literature**
+
+---
+
+## 📄 License & Attribution
+- **Dataset:** Provided for educational purposes as part of the internship program
+- **Code:** Open-source for educational and portfolio purposes
+- **Internship Program:** ID/X Partners x Rakamin Project-Based Internship
+- **Enhancements:** Independent work demonstrating professional growth
+
+---
+
+*This project showcases both technical implementation skills and the professional maturity to iteratively improve solutions. The current enhancements focus on transforming an academic exercise into a production-ready system while maintaining clear documentation of the engineering decisions and learning process.*
