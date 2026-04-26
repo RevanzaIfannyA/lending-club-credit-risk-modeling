@@ -5,6 +5,3 @@ scikit-learn
 seaborn
 imblearn
 xgboost
-lightgbm
-tqdm
-imb
