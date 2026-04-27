@@ -4,7 +4,7 @@
 ## Model Information
 - **Model Name**: best_model
 - **Model Type**: XGBoost Classifier with Threshold Tuning
-- **Training Date**: 2026-04-26 13:00:50
+- **Training Date**: 2026-04-27 21:50:48
 - **Training Data**: LendingClub 2007-2014
 
 ## Hyperparameters
