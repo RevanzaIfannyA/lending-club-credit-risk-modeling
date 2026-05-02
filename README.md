@@ -5,9 +5,11 @@
 [![XGBoost](https://img.shields.io/badge/XGBoost-2.0-orange.svg)](https://xgboost.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 📌 Overview
+## 📌 Project Overview
 
-This project builds a **credit risk prediction model** for LendingClub, a US peer-to-peer lending platform. Using historical loan data from 2007-2014, the model predicts whether a borrower will default on their loan, enabling data-driven approval decisions that maximize financial returns.
+This project was developed as the **Final Task** of the **Project-Based Virtual Internship Program** at **ID/X Partners** in collaboration with **Rakamin Academy**. The objective is to build a machine learning model that accurately predicts whether a loan applicant will default, enabling data-driven lending decisions that maximize financial returns.
+
+**Live Demo:** [lending-club-credit-risk-modeling.streamlit.app](https://lending-club-credit-risk-modeling.streamlit.app)
 
 **Key Achievements:**
 - ✅ **ROC-AUC: 0.71** - Good discrimination between good and bad loans
@@ -342,5 +344,5 @@ This project demonstrates:
 
 ---
 
-*Built with ❤️ for credit risk modeling and financial inclusion*
+**Built with ❤️ as part of ID/X Partners × Rakamin Academy Virtual Internship Program**
 ```
