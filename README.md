@@ -334,7 +334,7 @@ This project demonstrates:
 4. **Communication skills** - Clear insights with actionable recommendations
 5. **Production readiness** - Deployed Streamlit app with batch prediction
 6. **Data leakage awareness** - Correct train/test split handling
-7. **Trade-off understanding** - Explainable decisions (why threshold 0.20 not 0.50)
+7. **Trade-off understanding** - Explainable decisions (why threshold 0.55 not 0.50)
 
 **Portfolio differentiators:**
 - ✅ $33.3M business impact calculation
