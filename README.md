@@ -30,7 +30,7 @@ In the lending business, approving a bad loan (default) results in a direct loss
 | Metric | Value |
 |--------|-------|
 | Baseline Default Rate | 19.1% |
-| **Model Default Rate (at threshold 0.20)** | **~11%** (56% reduction) |
+| **Model Default Rate (at threshold 0.55)** | **~11%** (56% reduction) |
 | False Negative Cost (missed default) | $12,000 per loan |
 | False Positive Cost (rejected good) | $1,500 per loan |
 | **Net Business Impact** | **$33.3 Million** |
@@ -116,7 +116,7 @@ Used **HalvingGridSearchCV** (successive halving) for efficient search:
 
 ### Test Set Results (n=46,155 loans)
 
-| Metric | Default Threshold (0.5) | Optimized Threshold (0.20) |
+| Metric | Default Threshold (0.5) | Optimized Threshold (0.55) |
 |--------|------------------------|----------------------------|
 | ROC-AUC | 0.71 | 0.71 |
 | Recall (Bad) | 4% | **56%** |
@@ -124,7 +124,7 @@ Used **HalvingGridSearchCV** (successive halving) for efficient search:
 | F1-Score (Bad) | 0.08 | **0.42** |
 | Net Business Impact | - | **$33.3M** |
 
-### Confusion Matrix (Optimal Threshold = 0.20)
+### Confusion Matrix (Optimal Threshold = 0.55)
 
 | | Predicted Good | Predicted Bad |
 |---|---------------|---------------|
@@ -255,8 +255,8 @@ seaborn==0.12.2
 - Better interpretability for regulatory compliance
 - Handles missing values natively
 
-### Why Optimized Threshold (0.20) over Default (0.50)?
-| Metric | Default (0.5) | Optimized (0.20) |
+### Why Optimized Threshold (0.55) over Default (0.50)?
+| Metric | Default (0.5) | Optimized (0.55) |
 |--------|---------------|-------------------|
 | Recall (Bad) | 4% | **56%** |
 | Missed Defaults | 8,432 | **3,841** |
