@@ -212,199 +212,224 @@ prediction_mode = st.sidebar.radio(
 
 if prediction_mode == "Single Prediction (Form)":
     
-    # ========================================================================
-    # SEMUA INPUT YANG TIDAK CONDITIONAL DITARUH DI SIDEBAR (TANPA FORM)
-    # ========================================================================
-    
-    st.sidebar.subheader("🏦 Loan Details")
-    
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        loan_amnt = st.number_input("Loan Amount ($)", min_value=500, max_value=35000, value=10000, key="loan_amnt")
-        term = st.selectbox("Loan Term", ["36 months", "60 months"], key="term")
-    with col2:
-        int_rate = st.slider("Interest Rate (%)", min_value=5.0, max_value=26.0, value=13.0, key="int_rate") / 100
-        installment = st.number_input("Monthly Installment ($)", min_value=15, max_value=1500, value=300, key="installment")
-    
-    grade = st.sidebar.select_slider("Loan Grade (A=Best, G=Worst)", options=['A', 'B', 'C', 'D', 'E', 'F', 'G'], value='C', key="grade")
-    
-    st.sidebar.subheader("👤 Borrower Profile")
-    
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        emp_length_options = list(mapping_emp_length.keys())
-        emp_length = st.selectbox("Employment Length", emp_length_options, key="emp_length")
-        annual_inc = st.number_input("Annual Income ($)", min_value=0, value=60000, key="annual_inc")
-    with col2:
-        home_ownership_list = list(home_ownership_options.keys())
-        home_ownership = st.selectbox("Home Ownership", home_ownership_list, key="home_ownership")
-        verification_status = st.selectbox("Income Verification", ["Verified", "Source Verified", "Not Verified"], key="verification_status")
-    
-    st.sidebar.subheader("📅 Important Dates")
-    
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        issue_date = st.date_input("Loan Issue Date", datetime.now(), key="issue_date")
-    with col2:
-        earliest_credit_date = st.date_input("Earliest Credit Line Date", datetime(2010, 1, 1), key="earliest_credit_date")
-    
-    st.sidebar.subheader("📊 Financial Health")
-    
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        dti = st.slider("Debt-to-Income Ratio (%)", min_value=0, max_value=40, value=16, key="dti") / 100
-        delinq_2yrs = st.number_input("Delinquencies (last 2 years)", min_value=0, max_value=29, value=0, key="delinq_2yrs")
-    with col2:
-        inq_last_6mths = st.number_input("Credit Inquiries (last 6 months)", min_value=0, max_value=33, value=1, key="inq_last_6mths")
-        pub_rec = st.number_input("Public Records", min_value=0, max_value=11, value=0, key="pub_rec")
-    
-    st.sidebar.subheader("📈 Credit History")
-    st.sidebar.markdown("⚠️ **Important:** Select 'Yes' below to enter months since event. '0 months' means NEVER occurred.")
+    st.header("🏦 Single Loan Prediction")
+    st.markdown("Enter borrower details below to predict default risk")
     
     # ========================================================================
-    # DELINQUENCY SECTION (Conditional UI - langsung bereaksi)
+    # SEMUA INPUT DITARUH DI MAIN LAYOUT (BUKAN SIDEBAR)
     # ========================================================================
     
-    col1, col2 = st.sidebar.columns(2)
+    # Section 1: Loan Details
+    with st.container():
+        st.subheader("🏦 Loan Details")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            loan_amnt = st.number_input("Loan Amount ($)", min_value=500, max_value=35000, value=10000, key="loan_amnt")
+        with col2:
+            term = st.selectbox("Loan Term", ["36 months", "60 months"], key="term")
+        with col3:
+            grade = st.select_slider("Loan Grade (A=Best, G=Worst)", options=['A', 'B', 'C', 'D', 'E', 'F', 'G'], value='C', key="grade")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            int_rate = st.slider("Interest Rate (%)", min_value=5.0, max_value=26.0, value=13.0, key="int_rate") / 100
+        with col2:
+            installment = st.number_input("Monthly Installment ($)", min_value=15, max_value=1500, value=300, key="installment")
     
-    with col1:
+    st.divider()
+    
+    # Section 2: Borrower Profile
+    with st.container():
+        st.subheader("👤 Borrower Profile")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            emp_length_options = list(mapping_emp_length.keys())
+            emp_length = st.selectbox("Employment Length", emp_length_options, key="emp_length")
+        with col2:
+            annual_inc = st.number_input("Annual Income ($)", min_value=0, value=60000, key="annual_inc")
+        with col3:
+            verification_status = st.selectbox("Income Verification", ["Verified", "Source Verified", "Not Verified"], key="verification_status")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            home_ownership_list = list(home_ownership_options.keys())
+            home_ownership = st.selectbox("Home Ownership", home_ownership_list, key="home_ownership")
+        with col2:
+            selected_label = st.selectbox("Loan Purpose", list(purpose_options.keys()), key="purpose")
+            purpose_group = purpose_options[selected_label]
+    
+    st.divider()
+    
+    # Section 3: Important Dates
+    with st.container():
+        st.subheader("📅 Important Dates")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            issue_date = st.date_input("Loan Issue Date", datetime.now(), key="issue_date")
+        with col2:
+            earliest_credit_date = st.date_input("Earliest Credit Line Date", datetime(2010, 1, 1), key="earliest_credit_date")
+    
+    st.divider()
+    
+    # Section 4: Financial Health
+    with st.container():
+        st.subheader("📊 Financial Health")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            dti = st.slider("Debt-to-Income Ratio (%)", min_value=0, max_value=40, value=16, key="dti") / 100
+        with col2:
+            delinq_2yrs = st.number_input("Delinquencies (last 2 years)", min_value=0, max_value=29, value=0, key="delinq_2yrs")
+        with col3:
+            inq_last_6mths = st.number_input("Credit Inquiries (last 6 months)", min_value=0, max_value=33, value=1, key="inq_last_6mths")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            pub_rec = st.number_input("Public Records", min_value=0, max_value=11, value=0, key="pub_rec")
+        with col2:
+            addr_region = st.selectbox("Region", ["Northeast", "Midwest", "South", "West"], key="addr_region")
+    
+    st.divider()
+    
+    # Section 5: Credit History with Conditional UI
+    with st.container():
+        st.subheader("📈 Credit History")
+        st.markdown("⚠️ **Important:** Select 'Yes' below to enter months since event. '0 months' means NEVER occurred.")
+        
+        # Delinquency Section
         st.markdown("**Delinquency (Late Payment)**")
-        has_delinquent = st.radio(
-            "Has borrower ever been delinquent?",
-            options=["No (0 months)", "Yes"],
-            index=0,
-            key="has_delinquent",
-            horizontal=True,
-            help="Delinquency = 30+ days late payment"
-        )
+        col1, col2 = st.columns([1, 2])
         
-        if has_delinquent == "Yes":
-            months_delinq = st.number_input(
-                "Months since last delinquency",
-                min_value=1,
-                max_value=152,
-                value=12,
-                step=1,
-                key="months_delinq",
-                help="1 = within last month, 12 = one year ago"
+        with col1:
+            has_delinquent = st.radio(
+                "Has borrower ever been delinquent?",
+                options=["No (0 months)", "Yes"],
+                index=0,
+                key="has_delinquent",
+                horizontal=True,
+                help="Delinquency = 30+ days late payment"
             )
-            mths_since_last_delinq = months_delinq - 1
-            ever_delinquent = 1
-        else:
-            mths_since_last_delinq = 0
-            ever_delinquent = 0
-    
-    # ========================================================================
-    # PUBLIC RECORD SECTION
-    # ========================================================================
-    
-    with col2:
+        
+        with col2:
+            if has_delinquent == "Yes":
+                months_delinq = st.number_input(
+                    "Months since last delinquency",
+                    min_value=1,
+                    max_value=152,
+                    value=12,
+                    step=1,
+                    key="months_delinq",
+                    help="1 = within last month, 12 = one year ago"
+                )
+                mths_since_last_delinq = months_delinq - 1
+                ever_delinquent = 1
+            else:
+                mths_since_last_delinq = 0
+                ever_delinquent = 0
+                st.info("✅ No delinquency history")
+        
+        # Public Record Section
         st.markdown("**Public Record**")
-        has_public_record = st.radio(
-            "Has borrower ever had a public record?",
-            options=["No (0 months)", "Yes"],
-            index=0,
-            key="has_public_record",
-            horizontal=True,
-            help="Public record = bankruptcy, tax lien, judgment"
-        )
+        col1, col2 = st.columns([1, 2])
         
-        if has_public_record == "Yes":
-            months_public = st.number_input(
-                "Months since last public record",
-                min_value=1,
-                max_value=129,
-                value=24,
-                step=1,
-                key="months_public"
+        with col1:
+            has_public_record = st.radio(
+                "Has borrower ever had a public record?",
+                options=["No (0 months)", "Yes"],
+                index=0,
+                key="has_public_record",
+                horizontal=True,
+                help="Public record = bankruptcy, tax lien, judgment"
             )
-            mths_since_last_record = months_public - 1
-            ever_public_record = 1
-        else:
-            mths_since_last_record = 0
-            ever_public_record = 0
-    
-    # ========================================================================
-    # MAJOR DEROGATORY SECTION
-    # ========================================================================
-    
-    col1, col2 = st.sidebar.columns(2)
-    
-    with col1:
+        
+        with col2:
+            if has_public_record == "Yes":
+                months_public = st.number_input(
+                    "Months since last public record",
+                    min_value=1,
+                    max_value=129,
+                    value=24,
+                    step=1,
+                    key="months_public"
+                )
+                mths_since_last_record = months_public - 1
+                ever_public_record = 1
+            else:
+                mths_since_last_record = 0
+                ever_public_record = 0
+                st.info("✅ No public record history")
+        
+        # Major Derogatory Section
         st.markdown("**Major Derogatory**")
-        has_major_derog = st.radio(
-            "Has borrower ever had a major derogatory?",
-            options=["No (0 months)", "Yes"],
-            index=0,
-            key="has_major_derog",
-            horizontal=True,
-            help="Major derogatory = charge-off, default, foreclosure"
-        )
+        col1, col2 = st.columns([1, 2])
         
-        if has_major_derog == "Yes":
-            months_major = st.number_input(
-                "Months since major derogatory",
-                min_value=1,
-                max_value=154,
-                value=36,
-                step=1,
-                key="months_major"
+        with col1:
+            has_major_derog = st.radio(
+                "Has borrower ever had a major derogatory?",
+                options=["No (0 months)", "Yes"],
+                index=0,
+                key="has_major_derog",
+                horizontal=True,
+                help="Major derogatory = charge-off, default, foreclosure"
             )
-            mths_since_last_major_derog = months_major - 1
-            ever_major_derog = 1
-        else:
-            mths_since_last_major_derog = 0
-            ever_major_derog = 0
+        
+        with col2:
+            if has_major_derog == "Yes":
+                months_major = st.number_input(
+                    "Months since major derogatory",
+                    min_value=1,
+                    max_value=154,
+                    value=36,
+                    step=1,
+                    key="months_major"
+                )
+                mths_since_last_major_derog = months_major - 1
+                ever_major_derog = 1
+            else:
+                mths_since_last_major_derog = 0
+                ever_major_derog = 0
+                st.info("✅ No major derogatory history")
     
-    # ========================================================================
-    # OTHER CREDIT HISTORY
-    # ========================================================================
+    st.divider()
     
-    with col2:
-        open_acc = st.number_input("Open Credit Accounts", min_value=0, max_value=76, value=10, key="open_acc")
-    
-    # ========================================================================
-    # CREDIT CARDS & BALANCES
-    # ========================================================================
-    
-    st.sidebar.subheader("💳 Credit Cards & Balances")
-    
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        revol_bal = st.number_input("Revolving Balance ($)", min_value=0, max_value=80000, value=10000, key="revol_bal")
-        revol_util = st.slider("Revolving Utilization (%)", min_value=0, max_value=100, value=50, key="revol_util") / 100
-    with col2:
-        total_acc = st.number_input("Total Credit Accounts", min_value=1, max_value=150, value=20, key="total_acc")
-        tot_cur_bal = st.number_input("Total Current Balance ($)", min_value=0, max_value=600000, value=80000, key="tot_cur_bal")
-    
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        tot_coll_amt = st.number_input("Total Collection Amount ($)", min_value=0, max_value=2000, value=0, key="tot_coll_amt")
-    with col2:
+    # Section 6: Credit Cards & Balances
+    with st.container():
+        st.subheader("💳 Credit Cards & Balances")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            open_acc = st.number_input("Open Credit Accounts", min_value=0, max_value=76, value=10, key="open_acc")
+        with col2:
+            total_acc = st.number_input("Total Credit Accounts", min_value=1, max_value=150, value=20, key="total_acc")
+        with col3:
+            revol_bal = st.number_input("Revolving Balance ($)", min_value=0, max_value=80000, value=10000, key="revol_bal")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            revol_util = st.slider("Revolving Utilization (%)", min_value=0, max_value=100, value=50, key="revol_util") / 100
+        with col2:
+            tot_cur_bal = st.number_input("Total Current Balance ($)", min_value=0, max_value=600000, value=80000, key="tot_cur_bal")
+        with col3:
+            tot_coll_amt = st.number_input("Total Collection Amount ($)", min_value=0, max_value=2000, value=0, key="tot_coll_amt")
+        
         total_rev_hi_lim = st.number_input("Total Revolving Credit Limit ($)", min_value=0, max_value=120000, value=22000, key="total_rev_hi_lim")
-    
-    # ========================================================================
-    # ADDITIONAL INFORMATION
-    # ========================================================================
-    
-    st.sidebar.subheader("📍 Additional Information")
-    
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        selected_label = st.selectbox("Loan Purpose", list(purpose_options.keys()), key="purpose")
-        purpose_group = purpose_options[selected_label]
-    with col2:
-        addr_region = st.selectbox("Region", ["Northeast", "Midwest", "South", "West"], key="addr_region")
     
     # Auto-calculated flags
     emp_length_missing = 0
     has_credit_history = 1 if (tot_cur_bal > 0 or tot_coll_amt > 0 or total_rev_hi_lim > 0) else 0
     
+    st.divider()
+    
     # ========================================================================
-    # PREDICTION BUTTON (DI LUAR FORM, TAPI TETAP ADA)
+    # PREDICTION BUTTON (DI MAIN LAYOUT)
     # ========================================================================
     
-    submitted = st.sidebar.button("🔮 Predict Default Risk", type="primary", use_container_width=True)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        submitted = st.button("🔮 Predict Default Risk", type="primary", use_container_width=True)
     
     # ========================================================================
     # MAKE SINGLE PREDICTION
@@ -468,7 +493,7 @@ if prediction_mode == "Single Prediction (Form)":
             prediction = 1 if probability >= threshold else 0
         
         # ====================================================================
-        # DISPLAY RESULTS (SAMA SEPERTI SEBELUMNYA)
+        # DISPLAY RESULTS
         # ====================================================================
         
         st.markdown("---")
